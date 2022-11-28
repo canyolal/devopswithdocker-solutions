@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  backend:
+    image: docker-backend-1
+    container_name: part2-4-backend
+    environment:
+      - REDIS_HOST=part2-4-redis
+    ports:
+      - 8080:8080
+  frontend:
+    image: docker-frontend-1
+    container_name: part2-4-frontend
+    ports:
+      - 5000:5000
+  redis:
+    image: redis
+    container_name: part2-4-redis
+    ports:
+      - 6379:6379
