@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  backend:
+    image: docker-backend-1
+    container_name: part2-4-backend
+    environment:
+      - REDIS_HOST=part2-4-redis
+      - POSTGRES_HOST=part2-6-postgres
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+  frontend:
+    image: docker-frontend-1
+    container_name: part2-4-frontend
+    ports:
+      - 5000:5000
+  redis:
+    image: redis
+    container_name: part2-4-redis
+    ports:
+      - 6379:6379
+  postgres:
+    image: postgres:13.2-alpine
+    restart: unless-stopped
+    container_name: part2-6-postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DATABASE=postgres
