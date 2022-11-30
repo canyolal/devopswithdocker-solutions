@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ../../material-applications/example-backend
+    container_name: part3-5-backend
+    environment:
+      - REQUEST_ORIGIN=http://localhost
+      - REDIS_HOST=part3-5-redis
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DATABASE=postgres
+      - POSTGRES_HOST=part3-5-postgres
+    ports:
+      - 8080:8080
+  frontend:
+    build: ../../material-applications/example-frontend
+    container_name: part3-5-frontend
+    ports:
+      - 5000:5000
+  redis:
+    image: redis
+    container_name: part3-5-redis
+    ports:
+      - 6379:6379
+  postgres:
+    image: postgres:13.2-alpine
+    restart: unless-stopped
+    container_name: part3-5-postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DATABASE=postgres
+  proxy:
+    image: nginx:1.23.2-alpine
+    restart: unless-stopped
+    container_name: part3-5-proxy
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      

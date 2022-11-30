@@ -1,0 +1,32 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2580
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 FROM ubuntu:18.04 \
+\
+WORKDIR /usr/src/app\
+\
+EXPOSE 5000\
+\
+ENV REACT_APP_BACKEND_URL=http://localhost/api\
+\
+COPY . . \
+\
+RUN apt-get update && apt-get install -y curl\\\
+	curl -sL https://deb.nodesource.com/setup_14.x | bash &&\\\
+	apt install -y nodejs &&\\\
+	npm install &&\\\
+	npm run build &&\\\
+	npm install -g serve &&\\\
+	apt-get purge -y --auto-remove curl && \\\
+	rm -rf /var/lib/apt/lists/* && \\\
+	useradd -m appuser && \\\
+	chown -v appuser /usr/src/app\
+\
+\
+USER appuser\
+\
+CMD [ "serve", "-s", "-l", "5000", "build" ]}
